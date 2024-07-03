@@ -7,34 +7,50 @@ class Article {
 class ArticleManager {
     constructor(listArticle) {
         this.listArticle = listArticle;
+    }
 
+
+    filterByCategory(categoryId) {
+        if (categoryId === "all") {
+            return this.listArticle;
+        } else {
+            return this.listArticle.filter(article => article.categoryId == categoryId);
+        }
     }
 }
 
 
+let articleManager;
+
 fetch("http://localhost:5678/api/works")
     .then(data => data.json())
     .then(jsonListArticle => {
-        for (let jsonArticle of jsonListArticle) {
-            let article = new Article(jsonArticle);
-            document.querySelector(".gallery").innerHTML += `<div class="card article">
-                                                            <img src="${article.imageUrl}" class="card-img">
-                                                            <p class="card-title">${article.title}</p>
-                                                            </div>`
-        }
+        const articles = jsonListArticle.map(jsonArticle => new Article(jsonArticle));
+        articleManager = new ArticleManager(articles);
+        displayArticles(articles);
     });
 
 
-let btnTous = "Tous";
-let btnObjets = "Objets";
-let btnAppartements = "Appartements";
-let btnHotelsRestaurants = "Hôtels & Restaurants";
+function displayArticles(articles) {
+    const gallery = document.querySelector(".gallery");
+    gallery.innerHTML = "";
+    for (let article of articles) {
+        gallery.innerHTML += `<div class="card article">
+                                <img src="${article.imageUrl}" class="card-img">
+                                <p class="card-title">${article.title}</p>
+                              </div>`;
+    }
+}
 
-document.getElementById("h2").insertAdjacentHTML('beforeend', `<div id="buttons"><button onclick="fetchData('all')"id="btnTous">${btnTous}</button><button onclick="fetchData('objects')" id="btnObjets">${btnObjets}</button><button onclick="fetchData('apartments')"id="btnAppartements">${btnAppartements}</button><button onclick="fetchData('hotels')" id="btnHotelsRestaurants">${btnHotelsRestaurants}</button></div>`);
 
 
-
-
-
-
+document.querySelectorAll(".filters button").forEach(button => {
+    button.addEventListener("click", (event) => {
+        document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        const filter = event.target.getAttribute("data-filter");
+        const filteredArticles = articleManager.filterByCategory(filter);
+        displayArticles(filteredArticles);
+    });
+});
 
