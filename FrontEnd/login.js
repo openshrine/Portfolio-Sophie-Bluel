@@ -1,38 +1,34 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('login-form');
 
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();  // Empêche la soumission du formulaire
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-        const name = document.getElementById('name').value;
-        const password = document.getElementById('psswrd').value;
+        const email = document.getElementById('name').value;
+        const password = document.getElementById('password').value;
 
-        // Prépare les données de la requête
-        const data = {
-            email: name,
-            password: password
-        };
-
-        // Envoie la requête POST à l'API
-        fetch('http://localhost:5678/api/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.id === 'sophie.bluel@test.tld' && data.token === 'S0phie') {
-                    alert('Login successful!');
-                    // Redirige vers une autre page ou effectue une autre action
-                } else {
-                    alert('Erreur dans l’identifiant ou le mot de passe');
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Erreur dans l’identifiant ou le mot de passe');
+        try {
+            const response = await fetch('http://localhost:5678/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
             });
+
+            if (!response.ok) {
+                throw new Error('Mot de passe incorrect');
+            }
+
+            const data = await response.json();
+
+            // Save user token or any required information
+            localStorage.setItem('user', JSON.stringify(data));
+
+            // Redirect to the homepage
+            window.location.href = 'index.html';
+        } catch (error) {
+            alert(error.message);
+        }
     });
 });
