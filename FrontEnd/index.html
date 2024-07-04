@@ -11,6 +11,7 @@
     rel="stylesheet" />
   <meta name="description" content="" />
   <link rel="stylesheet" href="./assets/style.css" />
+  <script src="https://kit.fontawesome.com/2cadc7cd0e.js" crossorigin="anonymous"></script>
   <style>
     #edit-mode-banner {
       display: none;
@@ -20,21 +21,62 @@
       padding: 10px;
       position: fixed;
       top: 0;
-      width: 100%;
+      width: 90%;
       z-index: 1000;
+    }
+  </style>
+  <style>
+    /* Styles pour la modale */
+    .modal {
+      display: none;
+      /* Cacher par défaut */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
-  <div id="edit-mode-banner">Mode édition</div>
+  <div id="edit-mode-banner"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>Mode édition</div>
   <header>
     <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
     <nav>
       <ul>
         <li>projets</li>
         <li>contact</li>
-        <li><a href="/FrontEnd/login.html">login</a></li>
+        <li id="auth-action"><a href="/FrontEnd/login.html">login</a></li>
         <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
       </ul>
     </nav>
@@ -64,8 +106,8 @@
       </article>
     </section>
     <section id="portfolio">
-      <h2 id="h2">Mes Projets</h2>
-
+      <h2 id="h2">Mes Projets<button id="edit-projects-button" style="display:none;">Modifier</button></h2>
+      </h2>
       <div class="filters">
         <button data-filter="all">Tous</button>
         <button data-filter="1">Objets</button>
@@ -88,7 +130,6 @@
       </form>
     </section>
   </main>
-
   <footer>
     <nav>
       <ul>
@@ -96,29 +137,76 @@
       </ul>
     </nav>
   </footer>
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="modal-gallery">
+        <h2>Galerie photo</h2>
+        <div class="gallery-content"></div>
+        <button id="add-photo-view">Ajouter une photo</button>
+      </div>
+      <div class="modal-add-photo" style="display: none;">
+        <h2>Ajout photo</h2>
+        <form id="add-photo-form">
+          <label for="photo-title">Titre</label>
+          <input type="text" id="photo-title" name="photo-title" required>
+          <label for="photo-file">Fichier</label>
+          <input type="file" id="photo-file" name="photo-file" required>
+          <button type="submit">Ajouter</button>
+        </form>
+        <button id="back-to-gallery">Retour à la galerie</button>
+      </div>
+    </div>
+  </div>
+
   <script src="./gallery.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const user = JSON.parse(localStorage.getItem('user'));
       const authAction = document.getElementById('auth-action');
       const editModeBanner = document.getElementById('edit-mode-banner');
+      const editProjectsButton = document.getElementById('edit-projects-button');
 
       if (user) {
-        authAction.textContent = 'logout';
+        authAction.innerHTML = '<a href="#">logout</a>';
         editModeBanner.style.display = 'block';
+        editProjectsButton.style.display = 'inline-block';
 
         authAction.addEventListener('click', () => {
           localStorage.removeItem('user');
           window.location.reload();
         });
-      } else {
-        authAction.addEventListener('click', () => {
-          window.location.href = '/FrontEnd/login.html';
+        editProjectsButton.addEventListener('click', () => {
+          document.getElementById('projectModal').style.display = 'block';
         });
+      } else {
+        authAction.innerHTML = '<a href="/FrontEnd/login.html">login</a>';
+      }
+
+      const modal = document.getElementById('projectModal');
+      const closeModal = document.querySelector('.modal .close');
+
+      closeModal.onclick = function () {
+        modal.style.display = 'none';
+      }
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      }
+
+      document.getElementById('add-photo-view').onclick = function () {
+        document.querySelector('.modal-gallery').style.display = 'none';
+        document.querySelector('.modal-add-photo').style.display = 'block';
+      }
+
+      document.getElementById('back-to-gallery').onclick = function () {
+        document.querySelector('.modal-gallery').style.display = 'block';
+        document.querySelector('.modal-add-photo').style.display = 'none';
       }
     });
   </script>
-
 </body>
 
 </html>
