@@ -17,7 +17,7 @@
 <body>
   <div id="edit-mode-banner"
     style="display: none; background-color: black; color: white; padding: 10px; text-align: center;">
-    Mode édition
+    <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i> Mode édition
   </div>
   <header>
     <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -55,9 +55,10 @@
       </article>
     </section>
     <section id="portfolio">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; justify-content: center; align-items: center;">
         <h2 id="h2">Mes Projets</h2>
-        <button id="edit-button" style="display: none;">Modifier</button>
+        <button id="edit-button" style="display: none;"><i class="fa-regular fa-pen-to-square"
+            style="color: #000000;"></i> modifier</button>
       </div>
       <div class="filters">
         <button data-filter="all">Tous</button>
@@ -88,34 +89,38 @@
       </ul>
     </nav>
   </footer>
+
+  <!-- Modale pour la gestion des travaux -->
   <div id="modal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2 class="modal-title">Galerie photo</h2>
       <div class="modal-gallery"></div>
       <div class="modal-footer">
+        <hr class="ligne-grisee">
         <button id="add-photo-btn">Ajouter une photo</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal pour ajouter une photo -->
+  <!-- Modale pour l'ajout de photo -->
   <div id="add-photo-modal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close">&times;</span>
       <span class="back-arrow">&larr;</span>
       <h2 class="modal-title">Ajout photo</h2>
       <div class="upload-section">
-        <div class="upload-icon">📷</div>
+        <div class="upload-icon"><i class="fa-regular fa-image" style="color: #d6d9dc;"></i></div>
         <input type="file" id="photo-upload" style="display:none;" />
         <button id="choose-photo-btn">Choisir une photo</button>
         <img id="preview-image" style="display:none;" />
       </div>
       <form id="add-photo-form">
-        <label for="photo-title">Nom</label>
-        <input type="text" id="photo-title" name="photo-title" />
-        <label for="photo-category">Catégorie</label>
+        <label for="photo-title">Nom</label><br>
+        <input type="text" id="photo-title" name="photo-title" /><br>
+        <label for="photo-category">Catégorie</label><br>
         <select id="photo-category" name="photo-category">
+          <option value="" disabled selected hidden></option>
           <option value="1">Objets</option>
           <option value="2">Appartements</option>
           <option value="3">Hôtels & Restaurants</option>
@@ -125,10 +130,23 @@
     </div>
   </div>
 
-  <script src="./modal.js"></script>
+  <div id="modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 class="modal-title">Gérer les travaux</h2>
+      <div class="modal-gallery">
+        <!-- Les images et les boutons de suppression seront ajoutés ici par JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button id="add-photo-btn">Ajouter une photo</button>
+      </div>
+    </div>
+  </div>
+
+
   <script src="./gallery.js"></script>
   <script src="./login.js"></script>
-
+  <script src="./modal.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const token = localStorage.getItem("token");
