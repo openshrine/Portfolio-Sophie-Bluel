@@ -19,12 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (response.ok) {
-                // Save the token (or session information) if needed
+
                 localStorage.setItem("token", data.token);
-                // Redirect to the homepage
+
                 window.location.href = "/FrontEnd/index.html";
             } else {
-                // Show error message
+
                 alert("Le mot de passe ou l'email est incorrect.");
             }
         } catch (error) {

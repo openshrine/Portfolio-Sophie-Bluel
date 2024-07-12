@@ -14,40 +14,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedImage = null;
 
-    // Ouvrir la modale de gestion des travaux
+
     editButton.addEventListener("click", () => {
         modal.style.display = "flex";
         loadGallery();
     });
 
-    // Fermer la modale de gestion des travaux
+
     closeModal.addEventListener("click", () => {
         modal.style.display = "none";
     });
 
-    // Fermer la modale d'ajout de photo
+
     closeAddPhotoModal.addEventListener("click", () => {
         addPhotoModal.style.display = "none";
     });
 
-    // Retourner à la modale de gestion des travaux
+
     backArrow.addEventListener("click", () => {
         addPhotoModal.style.display = "none";
         modal.style.display = "flex";
     });
 
-    // Ouvrir la modale d'ajout de photo
+
     addPhotoButton.addEventListener("click", () => {
         modal.style.display = "none";
         addPhotoModal.style.display = "flex";
     });
 
-    // Sélectionner une photo
+
     choosePhotoButton.addEventListener("click", () => {
         photoUpload.click();
     });
 
-    // Afficher l'image sélectionnée
+
     photoUpload.addEventListener("change", () => {
         const file = photoUpload.files[0];
         if (file) {
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Vérifier la validité du formulaire d'ajout de photo
+
     addPhotoForm.addEventListener("input", checkFormValidity);
 
     function checkFormValidity() {
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Soumettre le formulaire d'ajout de photo
+
     addPhotoForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const title = document.getElementById("photo-title").value;
@@ -109,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Charger et afficher les travaux dans la modale
     async function loadGallery() {
         const response = await fetch("http://localhost:5678/api/works");
         const works = await response.json();
@@ -149,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Fermer les modales en cliquant à l'extérieur
     window.addEventListener("click", (event) => {
         if (event.target === modal) {
             modal.style.display = "none";
