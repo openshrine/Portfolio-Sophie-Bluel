@@ -11,42 +11,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewImage = document.getElementById("preview-image");
     const validateButton = document.getElementById("validate-btn");
     const addPhotoForm = document.getElementById("add-photo-form");
+    const uploadSection = document.querySelector(".upload-section");
 
     let selectedImage = null;
-
 
     editButton.addEventListener("click", () => {
         modal.style.display = "flex";
         loadGallery();
     });
 
-
     closeModal.addEventListener("click", () => {
         modal.style.display = "none";
     });
 
-
     closeAddPhotoModal.addEventListener("click", () => {
         addPhotoModal.style.display = "none";
     });
-
 
     backArrow.addEventListener("click", () => {
         addPhotoModal.style.display = "none";
         modal.style.display = "flex";
     });
 
-
     addPhotoButton.addEventListener("click", () => {
         modal.style.display = "none";
         addPhotoModal.style.display = "flex";
     });
 
-
     choosePhotoButton.addEventListener("click", () => {
         photoUpload.click();
     });
-
 
     photoUpload.addEventListener("change", () => {
         const file = photoUpload.files[0];
@@ -54,14 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedImage = file;
             const reader = new FileReader();
             reader.onload = (e) => {
-                previewImage.src = e.target.result;
-                previewImage.style.display = "block";
+                uploadSection.innerHTML = "";
+
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.maxWidth = "100px";
+                img.style.display = "block";
+                img.style.margin = "0 auto";
+                uploadSection.appendChild(img);
+
                 checkFormValidity();
             };
             reader.readAsDataURL(file);
         }
     });
-
 
     addPhotoForm.addEventListener("input", checkFormValidity);
 
@@ -75,9 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
     addPhotoForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        event.stopImmediatePropagation();
         const title = document.getElementById("photo-title").value;
         const category = document.getElementById("photo-category").value;
         const formData = new FormData();
@@ -98,8 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newWork = await response.json();
                 articleManager.listArticle.push(newWork);
                 displayArticles(articleManager.listArticle);
-                modal.style.display = "flex";
                 addPhotoModal.style.display = "none";
+                resetAddPhotoModal();
+                modal.style.display = "flex";
+                loadGallery();
             } else {
                 alert("Erreur lors de l'ajout de la photo.");
             }
@@ -155,4 +157,42 @@ document.addEventListener("DOMContentLoaded", () => {
             addPhotoModal.style.display = "none";
         }
     });
+
+    function resetAddPhotoModal() {
+        selectedImage = null;
+        previewImage.style.display = "none";
+        uploadSection.innerHTML = `
+            <div class="upload-icon"><i class="fa-regular fa-image" style="color: #d6d9dc;"></i></div>
+            <input type="file" id="photo-upload" style="display:none;" />
+            <button id="choose-photo-btn">+ Ajouter Photo</button>
+        `;
+        document.getElementById("photo-title").value = "";
+        document.getElementById("photo-category").value = "";
+        validateButton.disabled = true;
+
+        const newChoosePhotoButton = document.getElementById("choose-photo-btn");
+        newChoosePhotoButton.addEventListener("click", () => {
+            photoUpload.click();
+        });
+
+        const newPhotoUpload = document.getElementById("photo-upload");
+        newPhotoUpload.addEventListener("change", () => {
+            const file = newPhotoUpload.files[0];
+            if (file) {
+                selectedImage = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadSection.innerHTML = "";
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.style.maxWidth = "100px";
+                    img.style.display = "block";
+                    img.style.margin = "0 auto";
+                    uploadSection.appendChild(img);
+                    checkFormValidity();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 });

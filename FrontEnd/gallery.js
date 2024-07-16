@@ -50,8 +50,9 @@ document.querySelectorAll(".filters button").forEach(button => {
         document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
         event.target.classList.add("active");
         const filter = event.target.getAttribute("data-filter");
-        const filteredArticles = articleManager.filterByCategory(filter);
-        displayArticles(filteredArticles);
+        fetch(`http://localhost:5678/api/works?filter=${filter}`)
+            .then(response => response.json())
+            .then(articles => displayArticles(articles));
     });
 });
 

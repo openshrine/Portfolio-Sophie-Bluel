@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 localStorage.setItem("token", data.token);
 
-                window.location.href = "/FrontEnd/index.html";
+                window.location.href = "./index.html";
             } else {
 
                 alert("Le mot de passe ou l'email est incorrect.");
