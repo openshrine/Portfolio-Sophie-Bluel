@@ -398,8 +398,25 @@ label {
 	flex-wrap: wrap;
 	gap: 10px;
 	height: 250px;
+	overflow: auto;
 }
 
+.upload-section {
+	background-color: #e8f1f6;
+	margin-right: 80px;
+	margin-left: 80px;
+}
+
+.upload-icon {
+	padding-top: 20px;
+}
+
+.work-item {
+	position: relative;
+	width: 100px;
+	height: 100px;
+	margin-bottom: 20px;
+}
 
 .work-item img {
 	width: 100px;
@@ -466,6 +483,7 @@ label {
 
 
 .upload-icon {
+	font-size: 70px;
 	font-size: 50px;
 }
 
@@ -476,6 +494,12 @@ label {
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	margin-bottom: 10px;
+}
+
+#imgrestrictions {
+	font-size: smaller;
+	margin-bottom: 10px;
 }
 
 #photo-category {
