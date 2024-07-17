@@ -127,6 +127,8 @@
         </select>
         <hr class="ligne-grisee">
         <button type="submit" id="validate-btn" disabled>Valider</button>
+        <div id="error-message" style="color: red; display: none;">Veuillez remplir tous les champs et choisir une
+          image.</div>
       </form>
     </div>
   </div>
@@ -136,7 +138,6 @@
 
 
   <script src="./gallery.js"></script>
-  <script src="./login.js"></script>
   <script src="./modal.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

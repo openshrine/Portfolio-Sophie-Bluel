@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const validateButton = document.getElementById("validate-btn");
     const addPhotoForm = document.getElementById("add-photo-form");
     const uploadSection = document.querySelector(".upload-section");
+    const errorMessage = document.getElementById("error-message");
 
     let selectedImage = null;
 
@@ -42,6 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
         photoUpload.click();
     });
 
+    validateButton.addEventListener("click", () => {
+        errorMessage.style.display = "flex";
+    })
+
     photoUpload.addEventListener("change", () => {
         const file = photoUpload.files[0];
         if (file) {
@@ -70,8 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const category = document.getElementById("photo-category").value;
         if (selectedImage && title && category) {
             validateButton.disabled = false;
+            errorMessage.style.display = "none";
         } else {
             validateButton.disabled = true;
+            errorMessage.style.display = "flex";
         }
     }
 
@@ -84,6 +91,11 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("title", title);
         formData.append("category", category);
         formData.append("image", selectedImage);
+
+        if (!selectedImage || !title || !category) {
+            errorMessage.style.display = "block";
+            return;
+        }
 
         try {
             const response = await fetch("http://localhost:5678/api/works", {
