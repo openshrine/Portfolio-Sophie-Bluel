@@ -199,6 +199,7 @@ button {
 	border: none;
 	color: black;
 	margin-top: 15px;
+	cursor: pointer;
 }
 
 .filters button {

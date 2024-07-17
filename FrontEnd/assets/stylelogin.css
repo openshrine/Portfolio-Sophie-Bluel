@@ -332,6 +332,10 @@ footer nav ul {
     margin-bottom: 40px;
 }
 
+#login-button {
+    cursor: pointer;
+}
+
 input {
     border: none;
     box-shadow: 3px 3px 13px 3px #C3C3C3;
