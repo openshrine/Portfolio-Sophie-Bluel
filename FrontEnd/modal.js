@@ -23,15 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeModal.addEventListener("click", () => {
         modal.style.display = "none";
+        resetAddPhotoModal();
     });
 
     closeAddPhotoModal.addEventListener("click", () => {
         addPhotoModal.style.display = "none";
+        resetAddPhotoModal();
     });
 
     backArrow.addEventListener("click", () => {
         addPhotoModal.style.display = "none";
         modal.style.display = "flex";
+        resetAddPhotoModal();
     });
 
     addPhotoButton.addEventListener("click", () => {
@@ -44,8 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     validateButton.addEventListener("click", () => {
-        errorMessage.style.display = "flex";
-    })
+        if (!selectedImage.value && !title.value && !category.value) {
+            errorMessage.style.display = "flex";
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
 
     photoUpload.addEventListener("change", () => {
         const file = photoUpload.files[0];
@@ -171,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function resetAddPhotoModal() {
-        selectedImage = null;
+        photoUpload.value = "";
         previewImage.style.display = "none";
         uploadSection.innerHTML = `
             <div class="upload-icon"><i class="fa-regular fa-image" style="color: #d6d9dc;"></i></div>
@@ -185,26 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const newChoosePhotoButton = document.getElementById("choose-photo-btn");
         newChoosePhotoButton.addEventListener("click", () => {
             photoUpload.click();
-        });
-
-        const newPhotoUpload = document.getElementById("photo-upload");
-        newPhotoUpload.addEventListener("change", () => {
-            const file = newPhotoUpload.files[0];
-            if (file) {
-                selectedImage = file;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    uploadSection.innerHTML = "";
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.style.maxWidth = "100px";
-                    img.style.display = "block";
-                    img.style.margin = "0 auto";
-                    uploadSection.appendChild(img);
-                    checkFormValidity();
-                };
-                reader.readAsDataURL(file);
-            }
         });
     }
 });
