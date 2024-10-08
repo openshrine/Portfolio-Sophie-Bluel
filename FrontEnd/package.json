@@ -1,0 +1,13 @@
+{
+    "name": "nom-du-projet",
+    "version": "1.0.0",
+    "dependencies": {
+        "react": "^17.0.0",
+        "react-dom": "^17.0.0",
+        "react-scripts": "4.0.3"
+    },
+    "devDependencies": {},
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
